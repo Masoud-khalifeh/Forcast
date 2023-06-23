@@ -17,7 +17,7 @@ export default function Search(props) {
 
     return (
         <div>
-            <form on onSubmit={SearchSubmitHandler}>
+            <form onSubmit={SearchSubmitHandler}>
                 <input type="text" name="city" id="city" value={City} onChange={searchFieldHandler}></input>
                 <button>Find</button>
             </form>
