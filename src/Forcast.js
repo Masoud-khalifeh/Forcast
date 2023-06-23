@@ -7,6 +7,7 @@ export default function Forcast() {
     const [city, setCity] = useState("");
     const [latLong, setLatLong] = useState("");
     const [forcastDetail, setForcastDetail] = useState("");
+    const [firstRequest,setFirstRequest]=useState(false);
 
     function AddCity(city) {
         setCity(city)
@@ -19,6 +20,7 @@ export default function Forcast() {
             } catch (error) {
                 console.log(error)
             }
+            setFirstRequest(true)
 
         };
         if (city) {
@@ -32,9 +34,12 @@ export default function Forcast() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latLong[0].lat}&lon=${latLong[0].lon}&units=metric&appid=3363631a32d2773b5ce7af823700ea05`);
-                setForcastDetail(response.data)
+                setForcastDetail(response.data);
+                
             } catch (error) {
-                console.log(error)
+                console.log(error);
+                setForcastDetail("");
+              
             }
 
 
@@ -47,13 +52,30 @@ export default function Forcast() {
     return (
         <div>
             <Search Add={AddCity} />
-            <div>
-            <p>City Name : {latLong[0].name} </p>
-            <p>Temperature : {forcastDetail.main.temp} Celsius (°C) </p>
-            <p>Weather description : {forcastDetail.weather[0].description} </p>
-            <p>Humidity : {forcastDetail.main.humidity} Percentage (%)</p>
-            <p>Wind speed : {forcastDetail.wind.speed}  Meters per second (m/s)</p>
-            </div>
+            {firstRequest?(
+            latLong[0]&&forcastDetail.main ? <div>
+                <p>City Name : {latLong[0].name} </p>
+                <p>Temperature : {forcastDetail.main.temp} Celsius (°C) </p>
+                <p>Weather description : {forcastDetail.weather[0].description} </p>
+                <p>Humidity : {forcastDetail.main.humidity} Percentage (%)</p>
+                <p>Wind speed : {forcastDetail.wind.speed}  Meters per second (m/s)</p>
+            </div>:
+            <div>I could not find the city</div>
+            )
+            : null}
+
+
+
+            
+
+
+
+
+
+
+
+
+
         </div>
     )
 }
